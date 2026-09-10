@@ -1,4 +1,4 @@
-# Sistem Penilaian Kepatuahan & Mutu
+# Sistem Penilaian Kepatuhan & Mutu
 
 A progressive React + TypeScript web application for auditing internal hospital compliance, uniform standards, and unit-level performance evaluation.
 
