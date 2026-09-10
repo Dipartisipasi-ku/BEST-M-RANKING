@@ -160,7 +160,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
                 className="w-full text-left px-3 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-100 rounded-xl flex items-center gap-2.5 transition-colors"
               >
                 <Printer className="w-4 h-4 text-slate-500" />
-                <span>Pratinjau & Cetak</span>
+                <span>Cetak / Filter Laporan</span>
               </button>
             )}
           </nav>

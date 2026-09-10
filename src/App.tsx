@@ -1262,9 +1262,11 @@ export default function App() {
       <PrintReportView
         isOpen={isPrintModalOpen}
         onClose={() => setIsPrintModalOpen(false)}
-        records={filteredRecords}
-        selectedUnit={activeUnit}
+        records={records}
         allUnits={units}
+        activeRole={activeRole}
+        session={session}
+        initialUnitId={selectedUnitId}
       />
 
       {/* Modal 4: Supabase Integration & RBAC Simulator */}
