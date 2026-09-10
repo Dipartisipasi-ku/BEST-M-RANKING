@@ -763,6 +763,7 @@ export default function App() {
     if (!activeUnit) return [];
 
     let dynamicStaff: StaffMember[] = [];
+    let deletedStaffNames: string[] = [];
     try {
       const saved = localStorage.getItem(`unit_staff_${activeUnit.id}`);
       if (saved) {
@@ -770,6 +771,10 @@ export default function App() {
         if (Array.isArray(parsed)) {
           dynamicStaff = parsed;
         }
+      }
+      const savedDeleted = localStorage.getItem(`unit_deleted_staff_${activeUnit.id}`);
+      if (savedDeleted) {
+        deletedStaffNames = JSON.parse(savedDeleted);
       }
     } catch (e) {
       console.error(e);
@@ -780,9 +785,7 @@ export default function App() {
     const map = new Map<string, StaffMember>();
     predefined.forEach((s) => map.set(s.nama.toLowerCase(), s));
     dynamicStaff.forEach((s) => {
-      if (!map.has(s.nama.toLowerCase())) {
-        map.set(s.nama.toLowerCase(), s);
-      }
+      map.set(s.nama.toLowerCase(), s);
     });
 
     // Also include any staff with existing records for this unit
@@ -800,8 +803,35 @@ export default function App() {
       }
     });
 
-    return Array.from(map.values());
+    return Array.from(map.values()).filter(s => !deletedStaffNames.includes(s.nama.toLowerCase()));
   }, [activeUnit, records, staffVersion]);
+
+  // Sync session userName for staf_pegawai if their name was edited by Kepala Ruangan
+  useEffect(() => {
+    if (session && session.role === 'staf_pegawai' && session.unitId && currentStaffList.length > 0) {
+      const currentName = session.userName.toLowerCase();
+      // Find exact match first
+      let match = currentStaffList.find(s => s.nama.toLowerCase() === currentName);
+      
+      // If no exact match, try partial match
+      if (!match) {
+        match = currentStaffList.find(s => s.nama.toLowerCase().includes(currentName) || currentName.includes(s.nama.toLowerCase()));
+      }
+
+      if (match && match.nama !== session.userName) {
+        const updated = {
+          ...session,
+          userName: match.nama,
+          nip: match.nip !== '-' ? match.nip : session.nip,
+          jabatan: match.jabatan || session.jabatan
+        };
+        setSession(updated);
+        try {
+          localStorage.setItem(STORAGE_SESSION_KEY, JSON.stringify(updated));
+        } catch (e) {}
+      }
+    }
+  }, [currentStaffList, session?.role, session?.unitId]); // intentionally omitting session?.userName to prevent loop, it only checks on mount or staff list change
 
   // Bulk save for 1-click room rating
   const handleBulkSaveRecords = async (bulkRecords: EvaluationRecord[]) => {

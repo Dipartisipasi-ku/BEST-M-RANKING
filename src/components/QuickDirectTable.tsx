@@ -150,52 +150,104 @@ export const QuickDirectTable: React.FC<QuickDirectTableProps> = ({
     return Array.from(map.values());
   }, [safeStaffList, localStaffList]);
 
-  // State for Add Staff modal
+  // State for Add/Edit Staff modal
   const [showAddStaffModal, setShowAddStaffModal] = useState(false);
+  const [editingStaffId, setEditingStaffId] = useState<string | null>(null);
   const [newStaffNama, setNewStaffNama] = useState('');
   const [newStaffNip, setNewStaffNip] = useState('');
   const [newStaffJabatan, setNewStaffJabatan] = useState('');
 
-  const handleAddNewStaff = (e: React.FormEvent) => {
+  const openAddModal = () => {
+    setEditingStaffId(null);
+    setNewStaffNama('');
+    setNewStaffNip('');
+    setNewStaffJabatan('');
+    setShowAddStaffModal(true);
+  };
+
+  const openEditModal = (staf: StaffMember) => {
+    setEditingStaffId(staf.id);
+    setNewStaffNama(staf.nama);
+    setNewStaffNip(staf.nip === '-' ? '' : staf.nip || '');
+    setNewStaffJabatan(staf.jabatan);
+    setShowAddStaffModal(true);
+  };
+
+  const handleSaveStaffModal = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newStaffNama.trim()) return;
 
-    const newStaff: StaffMember = {
-      id: `staf-${unit.id}-${Date.now()}`,
-      unitId: unit.id,
-      nama: newStaffNama.trim(),
-      nip: newStaffNip.trim() || '-',
-      jabatan: newStaffJabatan.trim() || 'Staf Pelayanan / Nakes',
-    };
+    if (editingStaffId) {
+      // Edit existing staff
+      const updatedList = localStaffList.map((s) =>
+        s.id === editingStaffId
+          ? {
+              ...s,
+              nama: newStaffNama.trim(),
+              nip: newStaffNip.trim() || '-',
+              jabatan: newStaffJabatan.trim() || 'Staf Pelayanan / Nakes',
+            }
+          : s
+      );
+      setLocalStaffList(updatedList);
+      try {
+        localStorage.setItem(`unit_staff_${unit.id}`, JSON.stringify(updatedList));
+      } catch (err) {
+        console.warn('Storage error:', err);
+      }
+      if (onStaffListChange) {
+        onStaffListChange(updatedList);
+      }
+    } else {
+      // Add new staff
+      const newStaffNameLower = newStaffNama.trim().toLowerCase();
+      try {
+        const deletedKey = `unit_deleted_staff_${unit.id}`;
+        let deleted: string[] = JSON.parse(localStorage.getItem(deletedKey) || '[]');
+        if (deleted.includes(newStaffNameLower)) {
+          deleted = deleted.filter(n => n !== newStaffNameLower);
+          localStorage.setItem(deletedKey, JSON.stringify(deleted));
+        }
+      } catch (err) {}
 
-    const updated = [...localStaffList, newStaff];
-    setLocalStaffList(updated);
-    try {
-      localStorage.setItem(`unit_staff_${unit.id}`, JSON.stringify(updated));
-    } catch (err) {
-      console.warn('Storage error:', err);
-    }
-    if (onStaffListChange) {
-      onStaffListChange(updated);
-    }
+      const newStaff: StaffMember = {
+        id: `staf-${unit.id}-${Date.now()}`,
+        unitId: unit.id,
+        nama: newStaffNama.trim(),
+        nip: newStaffNip.trim() || '-',
+        jabatan: newStaffJabatan.trim() || 'Staf Pelayanan / Nakes',
+      };
 
-    setDrafts((prev) => ({
-      ...prev,
-      [newStaff.id]: {
-        seragam: 5,
-        atribut: 5,
-        sepatu: 5,
-        salam: 5,
-        ethics: getDefaultEthics(),
-        shift: globalShift,
-        catatan: '',
-        isSaved: false,
-      },
-    }));
+      const updatedList = [...localStaffList, newStaff];
+      setLocalStaffList(updatedList);
+      try {
+        localStorage.setItem(`unit_staff_${unit.id}`, JSON.stringify(updatedList));
+      } catch (err) {
+        console.warn('Storage error:', err);
+      }
+      if (onStaffListChange) {
+        onStaffListChange(updatedList);
+      }
+
+      setDrafts((prev) => ({
+        ...prev,
+        [newStaff.id]: {
+          seragam: 5,
+          atribut: 5,
+          sepatu: 5,
+          salam: 5,
+          ethics: getDefaultEthics(),
+          shift: globalShift,
+          catatan: '',
+          isSaved: false,
+        },
+      }));
+    }
 
     setNewStaffNama('');
     setNewStaffNip('');
     setNewStaffJabatan('');
+    setEditingStaffId(null);
     setShowAddStaffModal(false);
   };
 
@@ -205,6 +257,13 @@ export const QuickDirectTable: React.FC<QuickDirectTableProps> = ({
       setLocalStaffList(updated);
       try {
         localStorage.setItem(`unit_staff_${unit.id}`, JSON.stringify(updated));
+        
+        const deletedKey = `unit_deleted_staff_${unit.id}`;
+        const deleted: string[] = JSON.parse(localStorage.getItem(deletedKey) || '[]');
+        if (!deleted.includes(staffName.toLowerCase())) {
+          deleted.push(staffName.toLowerCase());
+          localStorage.setItem(deletedKey, JSON.stringify(deleted));
+        }
       } catch (err) {
         console.warn('Storage error:', err);
       }
@@ -221,12 +280,20 @@ export const QuickDirectTable: React.FC<QuickDirectTableProps> = ({
 
   const handleClearAllStaff = () => {
     if (window.confirm(`Bersihkan dan kosongkan seluruh daftar pegawai di ruangan ${unit.nama}?`)) {
-      setLocalStaffList([]);
       try {
+        const currentActiveNames = activeStaffList.map(s => s.nama.toLowerCase());
+        const deletedKey = `unit_deleted_staff_${unit.id}`;
+        let deleted: string[] = JSON.parse(localStorage.getItem(deletedKey) || '[]');
+        currentActiveNames.forEach(name => {
+          if (!deleted.includes(name)) deleted.push(name);
+        });
+        localStorage.setItem(deletedKey, JSON.stringify(deleted));
+
         localStorage.removeItem(`unit_staff_${unit.id}`);
       } catch (err) {
         console.warn('Storage error:', err);
       }
+      setLocalStaffList([]);
       if (onStaffListChange) {
         onStaffListChange([]);
       }
@@ -592,7 +659,7 @@ export const QuickDirectTable: React.FC<QuickDirectTableProps> = ({
             <button
               id="btn-add-staff-inline"
               type="button"
-              onClick={() => setShowAddStaffModal(true)}
+              onClick={openAddModal}
               className="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs font-bold rounded-xl shadow-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
               title="Tambah pegawai yang bertugas di unit ini"
             >
@@ -692,7 +759,7 @@ export const QuickDirectTable: React.FC<QuickDirectTableProps> = ({
                     </p>
                     <button
                       type="button"
-                      onClick={() => setShowAddStaffModal(true)}
+                      onClick={openAddModal}
                       className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-xs inline-flex items-center gap-2 cursor-pointer transition-all"
                     >
                       <UserPlus className="w-4 h-4" />
@@ -898,6 +965,14 @@ export const QuickDirectTable: React.FC<QuickDirectTableProps> = ({
                             <span>Simpan</span>
                           </>
                         )}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => openEditModal(staf)}
+                        className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+                        title={`Edit data ${staf.nama}`}
+                      >
+                        <Pencil className="w-3.5 h-3.5" />
                       </button>
                       <button
                         type="button"
@@ -1108,7 +1183,7 @@ export const QuickDirectTable: React.FC<QuickDirectTableProps> = ({
                 </span>
                 <div>
                   <h3 className="font-bold text-slate-900 text-sm sm:text-base">
-                    Tambah Pegawai Ruangan
+                    {editingStaffId ? 'Edit Data Pegawai' : 'Tambah Pegawai Ruangan'}
                   </h3>
                   <p className="text-[11px] text-slate-500">
                     {unit.nama}
@@ -1124,7 +1199,7 @@ export const QuickDirectTable: React.FC<QuickDirectTableProps> = ({
               </button>
             </div>
 
-            <form onSubmit={handleAddNewStaff} className="space-y-3.5">
+            <form onSubmit={handleSaveStaffModal} className="space-y-3.5">
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
                   Nama Lengkap Pegawai <span className="text-rose-500">*</span>
