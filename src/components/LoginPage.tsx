@@ -124,39 +124,45 @@ export const LoginPage: React.FC<LoginPageProps> = ({ units, onLogin,  }) => {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-slate-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl shadow-2xl shadow-blue-900/5 w-full max-w-5xl overflow-hidden flex flex-col md:flex-row border border-slate-100">
+    <div className="min-h-[100dvh] bg-gradient-to-br from-[#0a1128] via-[#1c2541] to-black flex items-center justify-center p-4 relative">
+      {/* Background Ornamen Etnik Samar */}
+      <div 
+        className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
+        style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/arabesque.png')" }}
+      ></div>
+
+      <div className="bg-white rounded-3xl shadow-2xl shadow-black/50 w-full max-w-5xl overflow-hidden flex flex-col md:flex-row border-t-2 border-slate-400/20 relative z-10">
         
         {/* Left Side: Branding */}
-        <div className="w-full md:w-1/2 bg-blue-600 p-8 md:p-12 text-white flex flex-col justify-between relative overflow-hidden shrink-0">
-          <div className="absolute inset-0 bg-blue-700/20"></div>
-          <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-blue-500 rounded-full blur-3xl opacity-50 mix-blend-screen pointer-events-none"></div>
-          <div className="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-blue-800 rounded-full blur-3xl opacity-50 mix-blend-multiply pointer-events-none"></div>
+        <div className="w-full md:w-1/2 bg-slate-900 p-8 md:p-12 text-white flex flex-col justify-center relative overflow-hidden shrink-0">
+          {/* Hero Image Background */}
+          <div className="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2053&auto=format&fit=crop" alt="Hospital Hero" className="w-full h-full object-cover opacity-30 mix-blend-luminosity" />
+          </div>
           
+          {/* Gradient Overlay navy to black */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#0a1128]/90 via-[#1c2541]/80 to-black/90 z-0"></div>
+          
+          {/* Lis Maroon (Decorative) */}
+          <div className="absolute top-0 left-0 w-2 h-full bg-rose-900 z-10 shadow-[2px_0_10px_rgba(159,18,57,0.5)]"></div>
+
           <div className="relative z-10">
-            <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/20 mb-8 shadow-xl">
-              <Hospital className="w-8 h-8 text-white" />
+            <div className="w-14 h-14 bg-gradient-to-br from-slate-800 to-black rounded-2xl flex items-center justify-center border border-amber-400/30 mb-8 shadow-[0_0_20px_rgba(251,191,36,0.15)]">
+              <Hospital className="w-8 h-8 text-amber-400" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-slate-100 drop-shadow-lg">
               Sistem Evaluasi<br />
-              <span className="text-blue-200">Kepatuhan Pegawai</span>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-amber-400 to-amber-500">Kepatuhan Pegawai</span>
             </h1>
-            <p className="text-blue-100 text-sm md:text-base leading-relaxed max-w-sm">
+            <p className="text-slate-300 text-sm md:text-base leading-relaxed max-w-sm border-l-2 border-slate-500 pl-4">
               Sistem terpadu untuk Komite Mutu dan Kepala Ruangan dalam mengelola dan memantau kepatuhan standar pelayanan.
             </p>
           </div>
           
-          <div className="relative z-10 mt-12 grid grid-cols-2 gap-4">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10">
-              <ShieldCheck className="w-6 h-6 text-blue-200 mb-2" />
-              <h3 className="font-bold text-sm mb-1">Aman & Terpusat</h3>
-              <p className="text-xs text-blue-100">Data tersimpan di Supabase Cloud</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10">
-              <UserCheck className="w-6 h-6 text-blue-200 mb-2" />
-              <h3 className="font-bold text-sm mb-1">Berbasis Peran</h3>
-              <p className="text-xs text-blue-100">Akses sesuai otoritas RBAC</p>
-            </div>
+          {/* Decorative Silver & Gold Lines */}
+          <div className="absolute bottom-8 right-8 flex gap-2 z-10 items-center">
+            <div className="w-16 h-0.5 bg-gradient-to-r from-transparent to-slate-400"></div>
+            <div className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_5px_rgba(251,191,36,0.8)]"></div>
           </div>
         </div>
 
@@ -167,7 +173,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ units, onLogin,  }) => {
               {isRegistering ? 'Daftar Akun Baru' : 'Selamat Datang Kembali'}
             </h2>
             <p className="text-slate-500 text-sm mt-1">
-              {isRegistering ? 'Isi formulir di bawah untuk mendaftarkan akun di sistem.' : 'Silakan login menggunakan akun Supabase Anda.'}
+              {isRegistering ? 'Isi formulir di bawah untuk mendaftarkan akun di sistem.' : 'Silakan login untuk masuk ke dalam sistem.'}
             </p>
           </div>
 
@@ -294,7 +300,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ units, onLogin,  }) => {
             <button
               type="submit"
               disabled={isLoading || (isRegistering && role === 'staf_pegawai' && !fullName)}
-              className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2 mt-6 shadow-sm shadow-blue-200 cursor-pointer disabled:opacity-70"
+              className="w-full py-3 bg-gradient-to-r from-[#0a1128] to-[#1c2541] hover:from-[#1c2541] hover:to-[#0a1128] text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2 mt-6 shadow-md shadow-slate-900/20 cursor-pointer disabled:opacity-70 border border-slate-700"
             >
               {isLoading ? (
                 <span>Memproses...</span>
@@ -315,7 +321,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ units, onLogin,  }) => {
                 setIsRegistering(!isRegistering);
                 setError('');
               }}
-              className="text-blue-600 font-bold hover:underline cursor-pointer"
+              className="text-amber-600 font-bold hover:text-amber-700 hover:underline cursor-pointer"
             >
               {isRegistering ? 'Login di sini' : 'Daftar di sini'}
             </button>
