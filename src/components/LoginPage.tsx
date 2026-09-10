@@ -147,8 +147,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ units, onLogin,  }) => {
           <div className="absolute top-0 left-0 w-2 h-full bg-rose-900 z-10 shadow-[2px_0_10px_rgba(159,18,57,0.5)]"></div>
 
           <div className="relative z-10">
-            <div className="w-14 h-14 bg-gradient-to-br from-slate-800 to-black rounded-2xl flex items-center justify-center border border-amber-400/30 mb-8 shadow-[0_0_20px_rgba(251,191,36,0.15)]">
-              <Hospital className="w-8 h-8 text-amber-400" />
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center border border-white/20 shadow-lg backdrop-blur-sm p-1">
+                <img src="/LOGO ATMA.png" alt="Logo" className="w-full h-full object-contain" />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-extrabold text-2xl tracking-tight leading-tight text-amber-400 drop-shadow-md">BEST-M-RANKING</span>
+                <span className="text-xs font-bold text-slate-300 tracking-wider">RSJD ATMA HUSADA MAHAKAM</span>
+              </div>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-slate-100 drop-shadow-lg">
               Sistem Evaluasi<br />

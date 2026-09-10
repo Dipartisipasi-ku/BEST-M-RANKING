@@ -72,25 +72,28 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
 
       {/* Sidebar Navigation */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 shadow-xl lg:shadow-none flex flex-col transform transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-72 bg-gradient-to-b from-[#0a1128] to-[#1c2541] border-r border-slate-800 shadow-xl lg:shadow-none flex flex-col transform transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="h-16 flex items-center px-6 border-b border-slate-200 shrink-0 bg-gradient-to-tr from-blue-700 to-indigo-600 text-white justify-between">
-          <div className="flex items-center gap-3">
-            <Hospital className="w-6 h-6" />
-            <h1 className="font-bold tracking-tight text-sm">SIM Penilaian Pegawai</h1>
+        <div className="h-16 flex items-center px-5 border-b border-slate-800 shrink-0 bg-[#0a1128] text-white justify-between">
+          <div className="flex items-center gap-2.5">
+            <img src="/LOGO ATMA.png" alt="Logo" className="w-8 h-8 object-contain" />
+            <div className="flex flex-col">
+              <span className="font-extrabold text-[14px] tracking-tight leading-tight text-amber-400">BEST-M-RANKING</span>
+              <span className="text-[9px] font-medium text-slate-300 leading-tight">RSJD ATMA HUSADA MAHAKAM</span>
+            </div>
           </div>
-          <button onClick={closeSidebar} className="lg:hidden p-1 bg-white/20 hover:bg-white/30 rounded-lg">
+          <button onClick={closeSidebar} className="lg:hidden p-1 bg-white/10 hover:bg-white/20 rounded-lg text-slate-300">
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="p-5 border-b border-slate-100 flex flex-col gap-1 shrink-0 bg-slate-50">
-          <span className="font-bold text-slate-800 truncate">{session.userName}</span>
-          <span className="text-xs text-slate-500 truncate">{session.unitNama}</span>
+        <div className="p-5 border-b border-slate-800 flex flex-col gap-1 shrink-0 bg-[#0a1128]/40">
+          <span className="font-bold text-slate-200 truncate">{session.userName}</span>
+          <span className="text-xs text-slate-400 truncate">{session.unitNama}</span>
           <div className="mt-2 inline-flex">
-             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${roleInfo.badgeColor} border border-slate-200/50`}>
+             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${roleInfo.badgeColor} border border-slate-700/50`}>
                 {roleInfo.title.split('(')[0]}
              </span>
           </div>
@@ -98,20 +101,20 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
 
         <div className="flex-1 overflow-y-auto p-4 space-y-6">
           <nav className="space-y-1">
-            <h3 className="px-2 text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">Manajemen RS</h3>
+            <h3 className="px-2 text-[10px] font-extrabold text-amber-500/70 uppercase tracking-wider mb-2">Manajemen RS</h3>
             
             {isSuperAdmin && (
               <button
                 onClick={() => { closeSidebar(); onOpenSupabase(); }}
-                className="w-full text-left px-3 py-2.5 text-xs font-bold text-purple-900 bg-purple-50 hover:bg-purple-100 rounded-xl flex items-center justify-between border border-purple-200 transition-colors"
+                className="w-full text-left px-3 py-2.5 text-xs font-bold text-amber-100 bg-amber-900/20 hover:bg-amber-900/40 rounded-xl flex items-center justify-between border border-amber-900/30 transition-colors"
               >
                 <span className="flex items-center gap-2.5">
-                  <Shield className="w-4 h-4 text-purple-600" />
+                  <Shield className="w-4 h-4 text-amber-400" />
                   <span>Konfigurasi RBAC</span>
                 </span>
                 <span
                   className={`w-2 h-2 rounded-full ${
-                    isSupabaseConfigured ? 'bg-emerald-500' : 'bg-purple-400'
+                    isSupabaseConfigured ? 'bg-emerald-500' : 'bg-slate-600'
                   }`}
                   title={isSupabaseConfigured ? 'Supabase Terhubung' : 'Offline'}
                 />
@@ -121,34 +124,34 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
             {canManageUnits && (
               <button
                 onClick={() => { closeSidebar(); onOpenMasterUnits(); }}
-                className="w-full text-left px-3 py-2.5 mt-2 text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-xl flex items-center gap-2.5 border border-rose-200 transition-colors"
+                className="w-full text-left px-3 py-2.5 mt-2 text-xs font-semibold text-slate-200 bg-white/5 hover:bg-white/10 rounded-xl flex items-center gap-2.5 border border-white/10 transition-colors"
               >
-                <Building2 className="w-4 h-4 text-rose-600" />
+                <Building2 className="w-4 h-4 text-slate-400" />
                 <span>Master Data Unit</span>
               </button>
             )}
           </nav>
 
           <nav className="space-y-1">
-            <h3 className="px-2 text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">Laporan & Data</h3>
+            <h3 className="px-2 text-[10px] font-extrabold text-amber-500/70 uppercase tracking-wider mb-2">Laporan & Data</h3>
             
             {canExportCSV && (
               <>
                 <button
                   onClick={() => { closeSidebar(); onExportCSV(); }}
-                  className="w-full text-left px-3 py-2.5 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl flex items-center gap-2.5 transition-colors"
+                  className="w-full text-left px-3 py-2.5 text-xs font-semibold text-slate-300 hover:bg-white/10 hover:text-white rounded-xl flex items-center gap-2.5 transition-colors"
                 >
-                  <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+                  <FileSpreadsheet className="w-4 h-4 text-slate-400" />
                   <span>Ekspor CSV / Excel</span>
                 </button>
-                <div className="relative overflow-hidden w-full text-left px-3 py-2.5 text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-xl flex items-center gap-2.5 transition-colors">
+                <div className="relative overflow-hidden w-full text-left px-3 py-2.5 text-xs font-semibold text-slate-300 hover:bg-white/10 hover:text-white rounded-xl flex items-center gap-2.5 transition-colors">
                   <input
                     type="file"
                     accept=".csv,.xlsx"
                     onChange={(e) => { closeSidebar(); if(onImportCSV) onImportCSV(e); }}
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   />
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-600"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                   <span>Impor Data CSV</span>
                 </div>
               </>
@@ -157,28 +160,28 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
             {canPrintReports && (
               <button
                 onClick={() => { closeSidebar(); onOpenPrint(); }}
-                className="w-full text-left px-3 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-100 rounded-xl flex items-center gap-2.5 transition-colors"
+                className="w-full text-left px-3 py-2.5 text-xs font-semibold text-slate-300 hover:bg-white/10 hover:text-white rounded-xl flex items-center gap-2.5 transition-colors"
               >
-                <Printer className="w-4 h-4 text-slate-500" />
+                <Printer className="w-4 h-4 text-slate-400" />
                 <span>Cetak / Filter Laporan</span>
               </button>
             )}
           </nav>
         </div>
 
-        <div className="p-4 border-t border-slate-200 space-y-2 shrink-0 bg-slate-50">
+        <div className="p-4 border-t border-slate-800 space-y-2 shrink-0 bg-[#0a1128]/80">
            {session.role === 'super_admin' && (
            <button
              onClick={() => { closeSidebar(); onResetData(); }}
-             className="w-full text-left px-3 py-2.5 text-xs font-semibold text-rose-600 hover:bg-rose-100 hover:text-rose-700 rounded-xl flex items-center gap-2.5 transition-colors"
+             className="w-full text-left px-3 py-2.5 text-xs font-semibold text-rose-400 hover:bg-rose-900/30 hover:text-rose-300 rounded-xl flex items-center gap-2.5 transition-colors"
            >
-             <RotateCcw className="w-4 h-4 text-rose-500" />
+             <RotateCcw className="w-4 h-4 text-rose-400" />
              <span>Reset Data (0 Dummy)</span>
            </button>
            )}
            <button
              onClick={() => { closeSidebar(); onLogout(); }}
-             className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-600 bg-white border border-slate-300 hover:bg-slate-100 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-2xs"
+             className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-200 bg-[#1c2541] border border-slate-700 hover:bg-[#2a365c] rounded-xl flex items-center justify-center gap-2 transition-colors shadow-2xs"
            >
              <LogOut className="w-4 h-4" />
              <span>Keluar Akun</span>
@@ -197,13 +200,11 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
             >
               <Menu className="w-5 h-5" />
             </button>
-            <div className="hidden lg:flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-700 to-indigo-600 text-white flex items-center justify-center shadow-xs">
-                <Stethoscope className="w-4 h-4" />
-              </div>
-              <div>
-                 <h2 className="text-sm font-extrabold text-slate-800">Evaluasi Pelayanan</h2>
-                 <p className="text-[10px] text-slate-500">Sistem Informasi Manajemen RS</p>
+            <div className="hidden lg:flex items-center gap-2.5">
+              <img src="/LOGO ATMA.png" alt="Logo" className="w-8 h-8 object-contain" />
+              <div className="flex flex-col">
+                 <h2 className="text-[14px] font-extrabold text-[#0a1128] leading-tight">BEST-M-RANKING</h2>
+                 <p className="text-[9px] font-bold text-slate-500 leading-tight">RSJD ATMA HUSADA MAHAKAM</p>
               </div>
             </div>
           </div>
@@ -256,8 +257,8 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
           }}
         >
           <div 
-            className="whitespace-nowrap inline-block text-xs font-bold text-slate-500 tracking-wide uppercase" 
-            style={{ animation: 'marquee 15s linear infinite' }}
+            className="whitespace-nowrap inline-block text-[11px] font-bold text-slate-500 tracking-wider uppercase" 
+            style={{ animation: 'marquee 35s linear infinite' }}
           >
             Didesain dan dikembangkan oleh Riandy, S.Kep
           </div>
