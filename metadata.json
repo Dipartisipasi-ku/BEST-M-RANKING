@@ -1,0 +1,7 @@
+{
+  "name": "Sistem Evaluasi Kepatuhan Pegawai RS",
+  "description": "Aplikasi form input evaluasi kepatuhan seragam, atribut, salam prima, dan disiplin kerja pegawai rumah sakit serta tabel hasil per ruangan, unit, dan instalasi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

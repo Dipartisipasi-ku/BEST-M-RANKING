@@ -1,11 +1,13 @@
-<div align="center">
+# Sistem Penilaian Kepatuahan & Mutu
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+A progressive React + TypeScript web application for auditing internal hospital compliance, uniform standards, and unit-level performance evaluation.
 
-  <h1>Built with AI Studio</h2>
+## Features Added (Based on latest specs):
+- **Responsive Adaptive Design**: Improved viewport bounds logic to ensure all form inputs remain visible within boundaries.
+- **Data Extensibility**: Complete CSV/Excel integration using `papaparse` for both bulk export and import routines.
+- **Access Authentication Flow**: Explicit username definitions, and robust 9-digit PIN validation (default `987654321`), with fully-featured PIN editing functionalities.
+- **Master Data Customization**: Dedicated modal views within the Admin Center for CRUD management of Evaluation Checklists and Core Unit deployments.
+- **Custom Visual Branding**: Input form headers for custom application naming and immediate logo rendering.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
-
-  <a href="https://aistudio.google.com/apps">Start building</a>
-
-</div>
+## Quickstart
+`npm run dev` or `npm run build`
