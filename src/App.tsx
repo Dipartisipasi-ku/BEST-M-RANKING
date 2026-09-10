@@ -247,6 +247,40 @@ export default function App() {
     }
   }, [session]);
 
+  // Auto-logout due to inactivity (5 minutes)
+  useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    
+    const resetTimer = () => {
+      clearTimeout(timeoutId);
+      // 5 minutes = 300,000 milliseconds
+      timeoutId = setTimeout(() => {
+        if (session) {
+          setSession(null);
+          showToast('Sesi Anda telah berakhir karena tidak ada aktivitas selama 5 menit.');
+        }
+      }, 300000);
+    };
+
+    if (session) {
+      resetTimer();
+      window.addEventListener('mousemove', resetTimer);
+      window.addEventListener('keydown', resetTimer);
+      window.addEventListener('click', resetTimer);
+      window.addEventListener('scroll', resetTimer, true);
+      window.addEventListener('touchstart', resetTimer);
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('mousemove', resetTimer);
+      window.removeEventListener('keydown', resetTimer);
+      window.removeEventListener('click', resetTimer);
+      window.removeEventListener('scroll', resetTimer, true);
+      window.removeEventListener('touchstart', resetTimer);
+    };
+  }, [session]);
+
   // Sync session unitNama and userName if the active unit is edited
   useEffect(() => {
     if (session && session.role === 'kepala_ruangan' && session.unitId) {

@@ -61,7 +61,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   const closeSidebar = () => setIsSidebarOpen(false);
 
   return (
-    <div className="flex h-screen bg-slate-100/70 text-slate-900 overflow-hidden">
+    <div className="flex h-[100dvh] bg-slate-100/70 text-slate-900 overflow-hidden">
       {/* Sidebar Overlay for Mobile */}
       {isSidebarOpen && (
         <div 
@@ -187,7 +187,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 h-[100dvh] overflow-hidden">
         {/* Top Header / Toolbar */}
         <header className="bg-white h-16 border-b border-slate-200 flex items-center justify-between px-4 sm:px-6 shrink-0 shadow-2xs z-20">
           <div className="flex items-center gap-3">
@@ -246,6 +246,22 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
         <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8">
           {children}
         </main>
+
+        {/* Running Text Footer with Safe Area (Adaptive) */}
+        <div 
+          className="w-full bg-slate-50 border-t border-slate-200 overflow-hidden shrink-0 relative flex items-center" 
+          style={{ 
+            paddingTop: '8px',
+            paddingBottom: 'calc(env(safe-area-inset-bottom) + 8px)'
+          }}
+        >
+          <div 
+            className="whitespace-nowrap inline-block text-xs font-bold text-slate-500 tracking-wide uppercase" 
+            style={{ animation: 'marquee 15s linear infinite' }}
+          >
+            Didesain dan dikembangkan oleh Riandy, S.Kep
+          </div>
+        </div>
       </div>
     </div>
   );

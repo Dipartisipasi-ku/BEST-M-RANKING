@@ -124,7 +124,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ units, onLogin,  }) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+    <div className="min-h-[100dvh] bg-slate-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-3xl shadow-2xl shadow-blue-900/5 w-full max-w-5xl overflow-hidden flex flex-col md:flex-row border border-slate-100">
         
         {/* Left Side: Branding */}
